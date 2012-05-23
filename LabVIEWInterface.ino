@@ -559,6 +559,7 @@ const int slaveSelectPin = rlyCard;
 
 //if(rlyPosition > 0){
       digitalWrite(slaveSelectPin,LOW);
+      SPI.transfer(0x45);//0x45 Test opcode
       SPI.transfer(rlyPosition + 0x30);
       digitalWrite(slaveSelectPin,HIGH);
 //}
