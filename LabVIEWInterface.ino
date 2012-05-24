@@ -530,8 +530,10 @@ void processCommand(unsigned char command[])
       pinMode (command[2], OUTPUT);
       digitalWrite(command[2],HIGH);
       //SPI.setClockDivider(SPI_CLOCK_DIV64); // 16MHZ/4 = 4MHZ 
-        setIsmRly(command[2],command[3]); // Relay card CS and relay to toggle
-         Serial.write('0');
+      retVal = setIsmRly(command[2],command[3],0); // Relay card CS, relay to toggle, R/W
+      Serial.write( (retVal >> 8));
+      Serial.write( (retVal & 0xFF));
+//         Serial.write('0');
         break;
 
 
@@ -553,15 +555,20 @@ void processCommand(unsigned char command[])
 /*********************************************************************************
 **  Functions
 *********************************************************************************/
-void setIsmRly(int rlyCard, int rlyPosition)
+int setIsmRly(int rlyCard, int rlyPosition, int readWrite)
 {
 const int slaveSelectPin = rlyCard;
-
+int rlyRetVal=0;
 //if(rlyPosition > 0){
       digitalWrite(slaveSelectPin,LOW);
-//      SPI.transfer(0x45);//0x45 Test opcode
-      SPI.transfer(rlyPosition + 0x30);
+      SPI.transfer(0x46);//Send opcode 
+      delay(50);
+      SPI.transfer(rlyPosition);
+      delay(50);
+      SPI.transfer(readWrite);
+//      rlyRetVal = SPI.transfer(0xFF);
       digitalWrite(slaveSelectPin,HIGH);
+      return rlyRetVal;
 //}
 }
 // Writes Values To Digital Port (DIO 0-13).  Pins Must Be Configured As Outputs Before Being Written To
