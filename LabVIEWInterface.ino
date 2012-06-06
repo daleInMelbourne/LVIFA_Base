@@ -14,8 +14,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <LiquidCrystal.h>
-
-
+#include "Freestyle.h"
 /*********************************************************************************
  ** Optionally Include And Configure Stepper Support
  *********************************************************************************/
@@ -521,7 +520,7 @@ void processCommand(unsigned char command[])
 
 
     /*********************************************************************************
-    ** ISM-RLY
+    ** Start - Freestyle BON stuff
     *********************************************************************************/
 
       case 0x40:  // Toggle Relay
@@ -536,6 +535,19 @@ void processCommand(unsigned char command[])
 //         Serial.write('0');
         break;
 
+
+      case 0x41:  // Get Current Sense
+      //SPI.begin();
+      //SPI.setDataMode(SPI_MODE0); //SPI Mode 0
+      retVal = getIsense(0); // Relay card CS, relay to toggle, R/W
+      Serial.write( (retVal >> 8));
+      Serial.write( (retVal & 0xFF));
+//         Serial.write('0');
+        break;
+
+    /*********************************************************************************
+    ** End - Freestyle BON stuff
+    *********************************************************************************/
 
 
     /*********************************************************************************
@@ -555,22 +567,13 @@ void processCommand(unsigned char command[])
 /*********************************************************************************
 **  Functions
 *********************************************************************************/
-int setIsmRly(int rlyCard, int rlyPosition, int readWrite)
-{
-const int slaveSelectPin = rlyCard;
-int rlyRetVal=0;
-//if(rlyPosition > 0){
-      digitalWrite(slaveSelectPin,LOW);
-      SPI.transfer(0x46);//Send opcode 
-      delay(50);
-      SPI.transfer(rlyPosition);
-      delay(50);
-      SPI.transfer(readWrite);
-//      rlyRetVal = SPI.transfer(0xFF);
-      digitalWrite(slaveSelectPin,HIGH);
-      return rlyRetVal;
-//}
-}
+
+
+    /*********************************************************************************
+    ** LIFA Maintenance Commands
+    *********************************************************************************/
+
+
 // Writes Values To Digital Port (DIO 0-13).  Pins Must Be Configured As Outputs Before Being Written To
 void writeDigitalPort(unsigned char command[])
 {
