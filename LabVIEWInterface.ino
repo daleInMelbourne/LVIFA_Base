@@ -536,13 +536,35 @@ void processCommand(unsigned char command[])
         break;
 
 
-      case 0x41:  // Get Current Sense
-      //SPI.begin();
-      //SPI.setDataMode(SPI_MODE0); //SPI Mode 0
-      retVal = getIsense(0); // Relay card CS, relay to toggle, R/W
-      Serial.write( (retVal >> 8));
-      Serial.write( (retVal & 0xFF));
-//         Serial.write('0');
+      case 0x41:
+        switch(command[2]){
+          case 0://Get sink reference
+            setSource(1); // 1 == Power via RSense
+            setSink(1); // 1 == Sink Reference
+            setSinkRef(1);// 1 == Low Sink Reference
+          break;
+          case 1: //Get DUT
+            setSource(1); // 1 == Power via RSense
+            setSink(0); // 0 == Sink is DUT
+            setSinkRef(1);// N/A
+          break;
+          case 2:
+          retVal=0;
+            retVal = getIsense();
+          break;
+          case 3:
+            selectProgrammer(1,1);
+            selectProgrammer(2,1);
+          break;
+          case 4:
+            selectProgrammer(1,0);
+            selectProgrammer(2,0);
+          break;
+          case 5:
+          break;
+        }
+            Serial.write( (retVal >> 8));
+            Serial.write( (retVal & 0xFF));
         break;
 
     /*********************************************************************************

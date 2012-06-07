@@ -37,7 +37,7 @@ void setup()
 {  
   // Initialize Serial Port With The Default Baud Rate
   syncLV();
-
+  analogReference(EXTERNAL);
   // Place your custom setup code here
   
 }
