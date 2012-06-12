@@ -70,6 +70,32 @@ int getIsense(){
   return retVal;
 }
 
+
+void enableRegister(){
+  MCP23S17 MCP23S17_U2 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x7 );
+  MCP23S17 MCP23S17_U5 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x5 );
+  
+  MCP23S17_U2.pinMode(OUTPUT);
+  MCP23S17_U5.pinMode(OUTPUT);  
+//  MCP23S17_U5.port(0x0000);
+//  MCP23S17_U2.port(0x0000);
+  
+      MCP23S17_U5.port(0x0077); // Register connect
+      setIsmRly(7, 0x20, 0); //picKit Vcc Connect
+}
+
+void disableRegister(){
+  MCP23S17 MCP23S17_U2 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x7 );
+  MCP23S17 MCP23S17_U5 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x5 );
+  
+  MCP23S17_U2.pinMode(OUTPUT);
+  MCP23S17_U5.pinMode(OUTPUT);  
+//  MCP23S17_U5.port(0x0000);
+//  MCP23S17_U2.port(0x0000);
+  
+      MCP23S17_U5.port(0x0000); // Register connect
+      setIsmRly(7, 0, 0); //picKit Vcc Connect
+}
 /*
 void selectProgrammer(int selProgrammer, char onOff)
 */
@@ -86,7 +112,7 @@ void selectProgrammer(int selProgrammer, char onOff){
     // picKit programmer connect
     if(onOff){
       MCP23S17_U2.port(0x0700); // picKit programmer connect
-      setIsmRly(7, 9, 0); //picKit Vcc Connect
+      setIsmRly(7, 0x0c, 0); //picKit Vcc Connect
     }
     else{
       // ISA programmer connect
@@ -98,7 +124,7 @@ void selectProgrammer(int selProgrammer, char onOff){
     if(onOff){
       // ISA programmer connect
       MCP23S17_U5.port(0x7F00); // ISA programmer connect
-      setIsmRly(7, 9, 0); //ISA Vcc Connect
+      setIsmRly(7, 0x0c, 0); //ISA Vcc Connect
     }
     else{
       // ISA programmer connect

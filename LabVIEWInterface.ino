@@ -549,18 +549,18 @@ void processCommand(unsigned char command[])
             setSinkRef(1);// N/A
           break;
           case 2:
-          retVal=0;
-            retVal = getIsense();
-          break;
-          case 3:
             selectProgrammer(1,1);
             selectProgrammer(2,1);
           break;
-          case 4:
+          case 3:
             selectProgrammer(1,0);
             selectProgrammer(2,0);
           break;
+          case 4:
+            enableRegister();
+          break;
           case 5:
+            disableRegister();
           break;
         }
             Serial.write( (retVal >> 8));
