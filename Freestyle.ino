@@ -42,6 +42,13 @@
 MCP23S17 MCP23S17_U2 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x7 );
 MCP23S17 MCP23S17_U5 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x5 );
 
+int readAN3(){
+  MCP23S17_U2.pinMode(OUTPUT);
+  MCP23S17_U2.digitalWrite(3, 0); // DisconnectConnect ISENSE to AN3
+  return analogRead(3);
+}
+
+
 int setSource(int ISource){
   MCP23S17_U2.pinMode(OUTPUT);
   MCP23S17_U2.digitalWrite(K1_ISENSE, ISource); // 0 = DUT direct to 3V6, 1 = DUT via Rsense to 3V6
@@ -72,9 +79,6 @@ int getIsense(){
 
 
 void enableRegister(){
-  MCP23S17 MCP23S17_U2 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x7 );
-  MCP23S17 MCP23S17_U5 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x5 );
-  
   MCP23S17_U2.pinMode(OUTPUT);
   MCP23S17_U5.pinMode(OUTPUT);  
 //  MCP23S17_U5.port(0x0000);
@@ -85,9 +89,6 @@ void enableRegister(){
 }
 
 void disableRegister(){
-  MCP23S17 MCP23S17_U2 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x7 );
-  MCP23S17 MCP23S17_U5 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x5 );
-  
   MCP23S17_U2.pinMode(OUTPUT);
   MCP23S17_U5.pinMode(OUTPUT);  
 //  MCP23S17_U5.port(0x0000);
@@ -100,9 +101,6 @@ void disableRegister(){
 void selectProgrammer(int selProgrammer, char onOff)
 */
 void selectProgrammer(int selProgrammer, char onOff){
-  MCP23S17 MCP23S17_U2 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x7 );
-  MCP23S17 MCP23S17_U5 = MCP23S17( MCP23S17_SLAVE_SELECT_PIN,0x5 );
-  
   MCP23S17_U2.pinMode(OUTPUT);
   MCP23S17_U5.pinMode(OUTPUT);  
 //  MCP23S17_U5.port(0x0000);

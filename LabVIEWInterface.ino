@@ -548,18 +548,21 @@ void processCommand(unsigned char command[])
             setSink(0); // 0 == Sink is DUT
             setSinkRef(1);// N/A
           break;
-          case 2:
+          case 2: //Get ANA3 Direct
+            retVal = readAN3();
+          break;
+          case 3:
             selectProgrammer(1,1);
             selectProgrammer(2,1);
           break;
-          case 3:
+          case 4:
             selectProgrammer(1,0);
             selectProgrammer(2,0);
           break;
-          case 4:
+          case 5:
             enableRegister();
           break;
-          case 5:
+          case 6:
             disableRegister();
           break;
         }
