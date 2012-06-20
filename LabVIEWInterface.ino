@@ -537,6 +537,8 @@ void processCommand(unsigned char command[])
 
 
       case 0x41:
+      SPI.begin();
+      SPI.setDataMode(SPI_MODE0); //SPI Mode 0
         switch(command[2]){
           case 0://Get sink reference
             setSource(1); // 1 == Power via RSense

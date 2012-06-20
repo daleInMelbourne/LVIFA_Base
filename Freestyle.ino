@@ -83,57 +83,92 @@ int getIsense(){
 
 
 void enableRegister(){
-/*
       MCP23S17_U5.digitalWrite(0,HIGH); // Register connect
       MCP23S17_U5.digitalWrite(1,HIGH); // Register connect
       MCP23S17_U5.digitalWrite(2,HIGH); // Register connect
       MCP23S17_U5.digitalWrite(4,HIGH); // Register connect
       MCP23S17_U5.digitalWrite(5,HIGH); // Register connect
       MCP23S17_U5.digitalWrite(6,HIGH); // Register connect
-  */    
-      setIsmRly(7, 0x20, 0); //picKit Vcc Connect
+      setIsmRly(7, 0x20, 0); //Register 3V6 Connect
 }
 
 void disableRegister(){
-  
       MCP23S17_U5.digitalWrite(0,LOW); // Register connect
-      setIsmRly(7, 0, 0); //picKit Vcc Connect
+      MCP23S17_U5.digitalWrite(1,LOW); // Register connect
+      MCP23S17_U5.digitalWrite(2,LOW); // Register connect
+      MCP23S17_U5.digitalWrite(4,LOW); // Register connect
+      MCP23S17_U5.digitalWrite(5,LOW); // Register connect
+      MCP23S17_U5.digitalWrite(6,LOW); // Register connect
+      setIsmRly(7, 0, 0); //Register 3V6 Connect
 }
 /*
 void selectProgrammer(int selProgrammer, char onOff)
 */
 void selectProgrammer(int selProgrammer, char onOff){
-//  MCP23S17_U2.pinMode(OUTPUT);
-//  MCP23S17_U5.pinMode(OUTPUT);  
-//  MCP23S17_U5.port(0x0000);
-//  MCP23S17_U2.port(0x0000);
-  
   if(selProgrammer == picKit){
     // picKit programmer connect
     if(onOff){
-//      MCP23S17_U2.digitalWrite(0x0700); // picKit programmer connect
+      MCP23S17_U2.digitalWrite(8,HIGH); // ICD connect
+      MCP23S17_U2.digitalWrite(9,HIGH); // ICD connect
+      MCP23S17_U2.digitalWrite(10,HIGH); // ICD connect
+//
+      MCP23S17_U5.digitalWrite(8,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(9,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(10,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(11,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(12,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(13,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(14,HIGH); // ICD connect
       setIsmRly(7, 0x0c, 0); //picKit Vcc Connect
     }
     else{
       // ISA programmer connect
-//      MCP23S17_U2.digitalWrite(0x0000); // ISA programmer connect
+      MCP23S17_U2.digitalWrite(8,LOW); // ICD connect
+      MCP23S17_U2.digitalWrite(9,LOW); // ICD connect
+      MCP23S17_U2.digitalWrite(10,LOW); // ICD connect
+//
+      MCP23S17_U5.digitalWrite(8,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(9,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(10,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(11,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(12,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(13,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(14,LOW); // ICD connect
       setIsmRly(7, 0, 0); //ISA Vcc Connect
     }
   }
   else if(selProgrammer == emberISA){
     if(onOff){
-      // ISA programmer connect
-//      MCP23S17_U5.digitalWrite(0x7F00); // ISA programmer connect
-      setIsmRly(7, 0x0c, 0); //ISA Vcc Connect
+      MCP23S17_U2.digitalWrite(8,HIGH); // ICD connect
+      MCP23S17_U2.digitalWrite(9,HIGH); // ICD connect
+      MCP23S17_U2.digitalWrite(10,HIGH); // ICD connect
+//
+      MCP23S17_U5.digitalWrite(8,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(9,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(10,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(11,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(12,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(13,HIGH); // ICD connect
+      MCP23S17_U5.digitalWrite(14,HIGH); // ICD connect
+      setIsmRly(7, 0x0c, 0); //picKit Vcc Connect
     }
     else{
       // ISA programmer connect
-//      MCP23S17_U5.digitalWrite(0x0000); // ISA programmer connect
+      MCP23S17_U2.digitalWrite(8,LOW); // ICD connect
+      MCP23S17_U2.digitalWrite(9,LOW); // ICD connect
+      MCP23S17_U2.digitalWrite(10,LOW); // ICD connect
+//
+      MCP23S17_U5.digitalWrite(8,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(9,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(10,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(11,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(12,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(13,LOW); // ICD connect
+      MCP23S17_U5.digitalWrite(14,LOW); // ICD connect
       setIsmRly(7, 0, 0); //ISA Vcc Connect
     }
   }
 }
-
 /*
 int setIsmRly(int rlyCard, int rlyPosition, int readWrite)
 */
