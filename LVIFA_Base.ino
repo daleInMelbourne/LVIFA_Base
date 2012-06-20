@@ -39,7 +39,7 @@ void setup()
   syncLV();
   analogReference(EXTERNAL);
   // Place your custom setup code here
-  
+  initI2cMcp();
 }
 
 
