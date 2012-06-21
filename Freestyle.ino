@@ -31,17 +31,19 @@
 #define SOURCE_3V6REG  0
 #define SOURCE_RSENSE  1
 // Current Sink Device
-#define SINK_IS_DUT  0
-#define SINK_IS_REF  1
+#define SINK_IS_DUT  1
+#define SINK_IS_REF  0
 // Current Sink Reference select
 #define SINK_HIGH 0
 #define SINK_LOW  1
+
+#define EN_REG 15
 
 Adafruit_MCP23017 MCP23S17_U2;
 Adafruit_MCP23017 MCP23S17_U5;
 
 
-void initI2cMcp(){
+void initTestBed(){
   MCP23S17_U2.begin(2);
   MCP23S17_U5.begin(3);
 
@@ -56,6 +58,44 @@ int readAN3(){
   return analogRead(3);
 }
 
+void refOn(){
+  MCP23S17_U2.digitalWrite(K1_ISENSE, 1);
+  MCP23S17_U2.digitalWrite(K2_IREF, 0); // iRefSink ON
+  MCP23S17_U2.digitalWrite(K3_HI_REF, 1);
+  MCP23S17_U5.digitalWrite(EN_REG, 1); //
+}
+void dutOn(){
+  MCP23S17_U2.digitalWrite(K1_ISENSE, 1);
+  MCP23S17_U2.digitalWrite(K2_IREF, 1); // DUT ON
+  MCP23S17_U2.digitalWrite(K3_HI_REF, 1);
+  MCP23S17_U5.digitalWrite(EN_REG, 1); //
+}
+void pwrOff(){
+  MCP23S17_U2.digitalWrite(K1_ISENSE, 0);
+  MCP23S17_U5.digitalWrite(EN_REG, 0); //
+}
+
+void enPrg(int prgState){
+  // Use direct power not through Isense Resistor
+  MCP23S17_U5.digitalWrite(EN_REG, 1); //
+  MCP23S17_U2.digitalWrite(K1_ISENSE, 0);//
+  // Now connect PIC programming lines
+  MCP23S17_U2.digitalWrite(8,prgState); // ICD connect
+  MCP23S17_U2.digitalWrite(9,prgState); // ICD connect
+  MCP23S17_U2.digitalWrite(10,prgState); // ICD connect
+  // And Ember programming lines
+  MCP23S17_U5.digitalWrite(8,prgState); // ICD connect
+  MCP23S17_U5.digitalWrite(9,prgState); // ICD connect
+  MCP23S17_U5.digitalWrite(10,prgState); // ICD connect
+  MCP23S17_U5.digitalWrite(11,prgState); // ICD connect
+  MCP23S17_U5.digitalWrite(12,prgState); // ICD connect
+  MCP23S17_U5.digitalWrite(13,prgState); // ICD connect
+  MCP23S17_U5.digitalWrite(14,prgState); // ICD connect
+  if(prgState)
+  setIsmRly(7, 0x0c, 0); //Enable power sense for PIC and EMBER
+  else
+  setIsmRly(7, 0x0c, 0); //Enable power sense for PIC and EMBER
+}
 
 int setSource(int ISource){
   MCP23S17_U2.digitalWrite(K1_ISENSE, ISource); // 0 = DUT direct to 3V6, 1 = DUT via Rsense to 3V6
@@ -83,29 +123,32 @@ int getIsense(){
 
 
 void enableRegister(){
-      MCP23S17_U5.digitalWrite(0,HIGH); // Register connect
-      MCP23S17_U5.digitalWrite(1,HIGH); // Register connect
-      MCP23S17_U5.digitalWrite(2,HIGH); // Register connect
-      MCP23S17_U5.digitalWrite(4,HIGH); // Register connect
-      MCP23S17_U5.digitalWrite(5,HIGH); // Register connect
-      MCP23S17_U5.digitalWrite(6,HIGH); // Register connect
-      setIsmRly(7, 0x20, 0); //Register 3V6 Connect
+  // Use direct power not through Isense Resistor
+  MCP23S17_U5.digitalWrite(EN_REG, 1); //
+  MCP23S17_U2.digitalWrite(K1_ISENSE, 0);//
+  MCP23S17_U5.digitalWrite(0,HIGH); // Register connect
+  MCP23S17_U5.digitalWrite(1,HIGH); // Register connect
+  MCP23S17_U5.digitalWrite(2,HIGH); // Register connect
+  MCP23S17_U5.digitalWrite(4,HIGH); // Register connect
+  MCP23S17_U5.digitalWrite(5,HIGH); // Register connect
+  MCP23S17_U5.digitalWrite(6,HIGH); // Register connect
+  setIsmRly(7, 0x20, 0); //Register 3V6 Connect
 }
 
 void disableRegister(){
-      MCP23S17_U5.digitalWrite(0,LOW); // Register connect
-      MCP23S17_U5.digitalWrite(1,LOW); // Register connect
-      MCP23S17_U5.digitalWrite(2,LOW); // Register connect
-      MCP23S17_U5.digitalWrite(4,LOW); // Register connect
-      MCP23S17_U5.digitalWrite(5,LOW); // Register connect
-      MCP23S17_U5.digitalWrite(6,LOW); // Register connect
-      setIsmRly(7, 0, 0); //Register 3V6 Connect
+  MCP23S17_U5.digitalWrite(0,LOW); // Register connect
+  MCP23S17_U5.digitalWrite(1,LOW); // Register connect
+  MCP23S17_U5.digitalWrite(2,LOW); // Register connect
+  MCP23S17_U5.digitalWrite(4,LOW); // Register connect
+  MCP23S17_U5.digitalWrite(5,LOW); // Register connect
+  MCP23S17_U5.digitalWrite(6,LOW); // Register connect
+  setIsmRly(7, 0, 0); //Register 3V6 Connect
 }
 /*
 void selectProgrammer(int selProgrammer, char onOff)
 */
 void selectProgrammer(int selProgrammer, char onOff){
-  if(selProgrammer == picKit){
+/*  if(selProgrammer == picKit){
     // picKit programmer connect
     if(onOff){
       MCP23S17_U2.digitalWrite(8,HIGH); // ICD connect
@@ -168,7 +211,7 @@ void selectProgrammer(int selProgrammer, char onOff){
       setIsmRly(7, 0, 0); //ISA Vcc Connect
     }
   }
-}
+*/}
 /*
 int setIsmRly(int rlyCard, int rlyPosition, int readWrite)
 */

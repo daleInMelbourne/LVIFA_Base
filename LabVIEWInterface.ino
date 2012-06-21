@@ -546,7 +546,7 @@ void processCommand(unsigned char command[])
             setSinkRef(1);// 1 == Low Sink Reference
           break;
           case 1: //Get DUT
-            setSource(1); // 1 == Power via RSense
+            setSource(0); // 1 == Power via RSense
             setSink(0); // 0 == Sink is DUT
             setSinkRef(1);// N/A
           break;
@@ -565,6 +565,28 @@ void processCommand(unsigned char command[])
             enableRegister();
           break;
           case 6:
+            disableRegister();
+          break;
+//
+          case 7:
+            refOn();
+          break;
+          case 8:
+            dutOn();
+          break;
+          case 9:
+            pwrOff();
+          break;
+          case 10:
+            enPrg(1);
+          break;
+          case 11:
+            enPrg(0);
+          break;
+          case 12:
+            enableRegister();
+          break;
+          case 13:
             disableRegister();
           break;
         }
