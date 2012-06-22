@@ -110,7 +110,7 @@ void disPrg(){
   // Use direct power not through Isense Resistor
   MCP23S17_U5.digitalWrite(EN_REG, VREG3V6_OFF); //
   MCP23S17_U2.digitalWrite(K1_ISENSE, 0);//
-  // Now connect PIC programming lines
+  // Now dconnect PIC programming lines
   MCP23S17_U2.digitalWrite(8,LOW); // ICD connect
   MCP23S17_U2.digitalWrite(9,LOW); // ICD connect
   MCP23S17_U2.digitalWrite(10,LOW); // ICD connect
@@ -128,7 +128,8 @@ void disPrg(){
 void enableRegister(){
   // Use direct power not through Isense Resistor
   MCP23S17_U5.digitalWrite(EN_REG, VREG3V6_ON); //
-  MCP23S17_U2.digitalWrite(K1_ISENSE, 0);//
+  MCP23S17_U2.digitalWrite(K1_ISENSE, SOURCE_3V6REG);//
+  MCP23S17_U2.digitalWrite(K2_LOAD, SINK_IS_DUT); // DUT ON
   MCP23S17_U5.digitalWrite(0,HIGH); // Register connect
   MCP23S17_U5.digitalWrite(1,HIGH); // Register connect
   MCP23S17_U5.digitalWrite(2,HIGH); // Register connect
