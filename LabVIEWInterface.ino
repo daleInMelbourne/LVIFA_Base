@@ -540,54 +540,29 @@ void processCommand(unsigned char command[])
       SPI.begin();
       SPI.setDataMode(SPI_MODE0); //SPI Mode 0
         switch(command[2]){
-          case 0://Get sink reference
-            setSource(1); // 1 == Power via RSense
-            setSink(1); // 1 == Sink Reference
-            setSinkRef(1);// 1 == Low Sink Reference
-          break;
-          case 1: //Get DUT
-            setSource(0); // 1 == Power via RSense
-            setSink(0); // 0 == Sink is DUT
-            setSinkRef(1);// N/A
-          break;
-          case 2: //Get ANA3 Direct
-            retVal = readAN3();
-          break;
-          case 3:
-            selectProgrammer(1,1);
-            selectProgrammer(2,1);
-          break;
-          case 4:
-            selectProgrammer(1,0);
-            selectProgrammer(2,0);
-          break;
-          case 5:
-            enableRegister();
-          break;
-          case 6:
-            disableRegister();
-          break;
-//
           case 7:
-            refOn();
+            refSenseOn();
           break;
           case 8:
-            dutOn();
+            dutSenseOn();
           break;
           case 9:
             pwrOff();
           break;
           case 10:
-            enPrg(1);
+            enPrg();
           break;
           case 11:
-            enPrg(0);
+            disPrg();
           break;
           case 12:
             enableRegister();
           break;
           case 13:
             disableRegister();
+          break;
+          case 14:
+            dutOn();//DUT powered directly not through ISense
           break;
         }
             Serial.write( (retVal >> 8));
